@@ -1,0 +1,59 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {
+                primaryFanSegControlClicked = id; 
+                secondaryFanSegControlClicked = id; 
+                setPrimaryFanHigh = id; 
+                setPrimaryFanLow = id; 
+                setPrimaryFanOff = id; 
+                setSecondaryFanHigh = id; 
+                setSecondaryFanLow = id; 
+                setSecondaryFanOff = id; 
+                showAboutPanel = id; 
+                showPreferencesPanel = id; 
+                showStatusPanel = id; 
+                terminate = id; 
+                visitHomePage = id; 
+            }; 
+            CLASS = I8kfanGUI; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                aboutMenuItem = NSMenuItem; 
+                fileOwnerController = NSObjectController; 
+                mainTabView = NSTabView; 
+                offThresholdField1 = NSTextField; 
+                offThresholdField2 = NSTextField; 
+                offThresholdField3 = NSTextField; 
+                offThresholdField4 = NSTextField; 
+                onThresholdField1 = NSTextField; 
+                onThresholdField2 = NSTextField; 
+                onThresholdField3 = NSTextField; 
+                onThresholdField4 = NSTextField; 
+                overdriveCheckBox = NSButton; 
+                peakField = NSTextField; 
+                primaryFanSegControl = NSSegmentedControl; 
+                primaryFanSpeedField = NSTextField; 
+                primaryFanStatusField = NSTextField; 
+                secondaryFanSegControl = NSSegmentedControl; 
+                secondaryFanSpeedField = NSTextField; 
+                secondaryFanStatusField = NSTextField; 
+                tempCheckBox = NSButton; 
+                temperatureField = NSTextField; 
+                thresholdList1 = NSPopUpButton; 
+                thresholdList2 = NSPopUpButton; 
+                thresholdList3 = NSPopUpButton; 
+                thresholdList4 = NSPopUpButton; 
+                thresholdList5 = NSPopUpButton; 
+                thresholdList6 = NSPopUpButton; 
+                thresholdList7 = NSPopUpButton; 
+                thresholdList8 = NSPopUpButton; 
+                versionField = NSTextField; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {CLASS = NSSegmentedControl; LANGUAGE = ObjC; SUPERCLASS = NSControl; }
+    ); 
+    IBVersion = 1; 
+}
