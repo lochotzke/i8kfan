@@ -1,6 +1,6 @@
 README
 ===========================================================
-I8kfanGUI   0.1                                May 12, 2007
+I8kfanGUI   0.2                               June 15, 2007
 I8kfan.kext 1.0.0d1                            May  9, 2007
 ===========================================================
 
@@ -13,6 +13,10 @@ Installation
 ===========================================================
 
 NOTE: This was written and tested on a Dell Inspiron 5100
+
+NOTE: For Inspiron 5100/1100 and possibly other models that
+      do not support SpeedStep technology, make sure you
+      have AppleIntelCPUPowerManagement.kext loaded.
 
 1.  Open up a Terminal window and try loading I8kfan.kext:
     
