@@ -46,6 +46,25 @@
     [primaryFanStatusField setStringValue:primaryFanStatus];
     
     [self setPrimaryFanSpeedWithTemp:temp status:primary_fan_status];
+    
+    [secondaryFanSpeedField setStringValue:[NSString stringWithFormat:@"%d RPM", i8k_get_fan_speed(I8K_FAN_SECONDARY)]];
+    int secondary_fan_status = i8k_get_fan_status(I8K_FAN_SECONDARY);
+    NSString *secondaryFanStatus;
+    if (secondary_fan_status == I8K_FAN_OFF) {
+        secondaryFanStatus = @"Off";
+        [secondaryFanSegControl setSelectedSegment:0];
+    } else if (secondary_fan_status == I8K_FAN_LOW) {
+        secondaryFanStatus = @"Low";
+        [secondaryFanSegControl setSelectedSegment:1];
+    } else if (secondary_fan_status == I8K_FAN_HIGH) {
+        secondaryFanStatus = @"High";
+        [secondaryFanSegControl setSelectedSegment:2];
+    } else {
+        secondaryFanStatus = [NSString stringWithFormat:@"Nil (%d)", secondary_fan_status];
+    }
+    [secondaryFanStatusField setStringValue:secondaryFanStatus];
+    
+    [self setSecondaryFanSpeedWithTemp:temp status:secondary_fan_status];
 }
 
 - (void)awakeFromNib
@@ -55,7 +74,7 @@
     
     // set default values
     peakCPUTemp = 0;
-    [versionField setStringValue:@"version 0.1"];
+    [versionField setStringValue:@"version 0.2"];
     
     NSMenuItem *menuItem;
     statusMenu = [[NSMenu alloc] initWithTitle:@"Apps"];
@@ -134,11 +153,17 @@
         
         if (temp <= off1)
             desired_status = (int)[self getSpeedFromState:0];
-        if (temp >= on1 && temp <= off2)
+        if ((temp >= on1 && temp <= off2) ||
+            (temp > off1 && temp < on1 && desired_status != 0) ||
+            (temp >= on1 && desired_status != state2))
             desired_status = (int)[self getSpeedFromState:state1];
-        if (temp >= on2 && temp <= off3)
+        if ((temp >= on2 && temp <= off3) ||
+            (temp > off2 && temp < on2 && desired_status != state1) ||
+            (temp >= on2 && desired_status != state3))
             desired_status = (int)[self getSpeedFromState:state2];
-        if (temp >= on3 && temp <= off4)
+        if ((temp >= on3 && temp <= off4) ||
+            (temp > off3 && temp < on3 && desired_status != state2) ||
+            (temp >= on3 && desired_status != state4))
             desired_status = (int)[self getSpeedFromState:state3];
         if (temp >= on4)
             desired_status = (int)[self getSpeedFromState:state4];
@@ -148,6 +173,53 @@
         } else {
             if (status != desired_status)
                 i8k_set_fan(I8K_FAN_PRIMARY, desired_status);
+        }
+        return desired_status;
+    }
+    return -1;
+}
+
+- (int)setSecondaryFanSpeedWithTemp: (int)temp status: (int)status
+{
+    if ([tempCheckBox state] == 1) {
+        int state1 = [[thresholdList5 selectedItem] tag];
+        int state2 = [[thresholdList6 selectedItem] tag];
+        int state3 = [[thresholdList7 selectedItem] tag];
+        int state4 = [[thresholdList8 selectedItem] tag];
+        
+        int on1  = [[onThresholdField1 stringValue] intValue];
+        int off1 = [[offThresholdField1 stringValue] intValue];
+        int on2  = [[onThresholdField2 stringValue] intValue];
+        int off2 = [[offThresholdField2 stringValue] intValue];
+        int on3  = [[onThresholdField3 stringValue] intValue];
+        int off3 = [[offThresholdField3 stringValue] intValue];
+        int on4  = [[onThresholdField4 stringValue] intValue];
+        int off4 = [[offThresholdField4 stringValue] intValue];
+        
+        int desired_status = status;
+        
+        if (temp <= off1)
+            desired_status = (int)[self getSpeedFromState:0];
+        if ((temp >= on1 && temp <= off2) ||
+            (temp > off1 && temp < on1 && desired_status != 0) ||
+            (temp >= on1 && desired_status != state2))
+            desired_status = (int)[self getSpeedFromState:state1];
+        if ((temp >= on2 && temp <= off3) ||
+            (temp > off2 && temp < on2 && desired_status != state1) ||
+            (temp >= on2 && desired_status != state3))
+            desired_status = (int)[self getSpeedFromState:state2];
+        if ((temp >= on3 && temp <= off4) ||
+            (temp > off3 && temp < on3 && desired_status != state2) ||
+            (temp >= on3 && desired_status != state4))
+            desired_status = (int)[self getSpeedFromState:state3];
+        if (temp >= on4)
+            desired_status = (int)[self getSpeedFromState:state4];
+        
+        if ([overdriveCheckBox state] == 1) {
+            i8k_set_fan(I8K_FAN_SECONDARY, desired_status);
+        } else {
+            if (status != desired_status)
+                i8k_set_fan(I8K_FAN_SECONDARY, desired_status);
         }
         return desired_status;
     }
@@ -210,6 +282,18 @@
         [self setPrimaryFanLow:sender];
     } else if (clickedSegment == 2) {
         [self setPrimaryFanHigh:sender];
+    }
+}
+
+-(IBAction)secondaryFanSegControlClicked:(id)sender
+{
+    int clickedSegment = [sender selectedSegment];
+    if (clickedSegment == 0) {
+        [self setSecondaryFanOff:sender];
+    } else if (clickedSegment == 1) {
+        [self setSecondaryFanLow:sender];
+    } else if (clickedSegment == 2) {
+        [self setSecondaryFanHigh:sender];
     }
 }
 

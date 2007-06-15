@@ -48,12 +48,18 @@
     IBOutlet NSPopUpButton *thresholdList3;
     IBOutlet NSPopUpButton *thresholdList4;
     
+    IBOutlet NSPopUpButton *thresholdList5;
+    IBOutlet NSPopUpButton *thresholdList6;
+    IBOutlet NSPopUpButton *thresholdList7;
+    IBOutlet NSPopUpButton *thresholdList8;
+    
     // check boxes
     IBOutlet NSButton *tempCheckBox;
     IBOutlet NSButton *overdriveCheckBox;
     
     // buttons
     IBOutlet NSSegmentedControl *primaryFanSegControl;
+    IBOutlet NSSegmentedControl *secondaryFanSegControl;
     
     // records
     int peakCPUTemp;
@@ -74,6 +80,7 @@
 -(void)setSecondaryFanLow:(id)sender;
 -(void)setSecondaryFanHigh:(id)sender;
 -(IBAction)primaryFanSegControlClicked:(id)sender;
+-(IBAction)secondaryFanSegControlClicked:(id)sender;
 -(IBAction)showStatusPanel:(id)sender;
 -(IBAction)showPreferencesPanel:(id)sender;
 -(IBAction)showAboutPanel:(id)sender;
