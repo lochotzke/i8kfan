@@ -1,0 +1,8 @@
+2007.06.15
+  - I8kfanGUI v0.2
+    - secondary fan support added
+
+2007.05.12
+  - first release
+    - I8kfan v1.0.0d1
+    - I8kfanGUI v0.1
